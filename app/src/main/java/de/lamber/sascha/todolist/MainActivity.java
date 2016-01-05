@@ -33,6 +33,6 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         todoList = (ListView) findViewById(R.id.todoList);
-        todoList.setAdapter(new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, aufgaben));
+        todoList.setAdapter(new ArrayAdapter<String>(this, R.layout.todoeintrag, aufgaben));
     }
 }
