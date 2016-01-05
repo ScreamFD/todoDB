@@ -1,11 +1,10 @@
 package de.lamber.sascha.todolist;
 
-import android.content.Context;
+import android.app.Activity;
+import android.content.Intent;
 import android.support.v7.widget.RecyclerView;
-import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.BaseAdapter;
 import android.widget.CheckBox;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -18,11 +17,34 @@ import java.util.List;
  */
 public class TodoAdapter extends RecyclerView.Adapter{
 
+    private static TodoAdapter mySingleton;
+
     private List<Todo> aufgaben;
-    private MainActivity activity;
+    private Activity activity;
+
+    public static TodoAdapter getSingleton(Activity activity){
+
+        if (mySingleton == null){
+            mySingleton = new TodoAdapter(activity);
+        }
+
+        return mySingleton;
+    }
+
+    public Todo getTodo(int id){
+
+        for (Todo todo : aufgaben){
+            if (todo.getId() == id){
+                return todo;
+            }
+        }
+
+        return null;
+    }
 
     private static class TodoViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
 
+        public Todo currentTodo;
         public TextView todoTitle;
         public CheckBox isDone;
 
@@ -34,14 +56,20 @@ public class TodoAdapter extends RecyclerView.Adapter{
             view.setOnClickListener(this);
         }
 
+        public void setCurrentTodo(Todo todo){
+            currentTodo = todo;
+            todoTitle.setText(todo.getTitle());
+            isDone.setChecked(todo.isDone());
+        }
+
         @Override
         public void onClick(View v) {
-            Toast toast = Toast.makeText(v.getContext(), todoTitle.getText(), Toast.LENGTH_SHORT);
-            toast.show();
+            Intent intent = MainActivity.createTodoIntent(v.getContext(), currentTodo.getId());
+            v.getContext().startActivity(intent);
         }
     }
 
-    public TodoAdapter(MainActivity activity){
+    private TodoAdapter(Activity activity){
 
         this.activity = activity;
 
@@ -76,8 +104,7 @@ public class TodoAdapter extends RecyclerView.Adapter{
         Todo aufgabe = aufgaben.get(position);
 
         TodoViewHolder todoHolder = (TodoViewHolder)holder;
-        todoHolder.todoTitle.setText(aufgabe.getTitle());
-        todoHolder.isDone.setChecked(aufgabe.isDone());
+        todoHolder.setCurrentTodo(aufgabe);
 
     }
 

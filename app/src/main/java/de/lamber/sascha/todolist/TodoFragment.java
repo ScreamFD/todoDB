@@ -27,8 +27,10 @@ public class TodoFragment extends Fragment {
     @Override
     public void onCreate(Bundle saveInstanceState){
         super.onCreate(saveInstanceState);
-        aufgabe = new Todo("");
-        // TODO: Replace empty Todo
+
+        int todoId = (int)getActivity().getIntent().getSerializableExtra("todoID");
+
+        aufgabe = TodoAdapter.getSingleton(getActivity()).getTodo(todoId);
     }
 
 
@@ -39,7 +41,9 @@ public class TodoFragment extends Fragment {
        View view = inflater.inflate(R.layout.fragment_todo, container, false);
 
         todoTitle = (TextView) view.findViewById(R.id.todoTitle);
+        todoTitle.setText(aufgabe.getTitle());
         isDone = (CheckBox) view.findViewById(R.id.isDone);
+        isDone.setChecked(aufgabe.isDone());
         isDone.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {

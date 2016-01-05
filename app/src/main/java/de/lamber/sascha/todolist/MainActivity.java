@@ -1,5 +1,7 @@
 package de.lamber.sascha.todolist;
 
+import android.content.Context;
+import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
@@ -20,6 +22,14 @@ public class MainActivity extends AppCompatActivity {
         todoList.setHasFixedSize(true);
         todoList.setLayoutManager(new LinearLayoutManager(this));
 
-        todoList.setAdapter(new TodoAdapter(this));
+        todoList.setAdapter(TodoAdapter.getSingleton(this));
+    }
+
+    public static Intent createTodoIntent(Context context, int id){
+
+        Intent intent = new Intent(context, TodoActivity.class);
+        intent.putExtra("todoID", id);
+
+        return intent;
     }
 }
