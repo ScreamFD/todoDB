@@ -19,6 +19,7 @@ public class TodoFragment extends Fragment {
     private Todo aufgabe;
     private TextView todoTitle;
     private CheckBox isDone;
+    private TextView todoId;
 
     public TodoFragment() {
         // Required empty public constructor
@@ -60,6 +61,9 @@ public class TodoFragment extends Fragment {
                 aufgabe.setDone(isChecked);
             }
         });
+
+        todoId = (TextView) view.findViewById(R.id.todoId);
+        todoId.setText(String.valueOf(aufgabe.getId()));
 
         return view;
     }
