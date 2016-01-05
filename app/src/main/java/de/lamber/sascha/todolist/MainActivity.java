@@ -1,13 +1,11 @@
 package de.lamber.sascha.todolist;
 
-import android.content.Context;
-import android.content.Intent;
+
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.widget.ArrayAdapter;
-import android.widget.ListView;
+
 
 public class MainActivity extends AppCompatActivity {
 
@@ -25,11 +23,4 @@ public class MainActivity extends AppCompatActivity {
         todoList.setAdapter(TodoAdapter.getSingleton(this));
     }
 
-    public static Intent createTodoIntent(Context context, int id){
-
-        Intent intent = new Intent(context, TodoActivity.class);
-        intent.putExtra("todoID", id);
-
-        return intent;
-    }
 }

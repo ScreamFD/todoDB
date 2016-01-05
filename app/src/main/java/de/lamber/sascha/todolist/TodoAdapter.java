@@ -42,6 +42,10 @@ public class TodoAdapter extends RecyclerView.Adapter{
         return null;
     }
 
+    public List<Todo> getTodos(){
+        return aufgaben;
+    }
+
     private static class TodoViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
 
         public Todo currentTodo;
@@ -64,7 +68,7 @@ public class TodoAdapter extends RecyclerView.Adapter{
 
         @Override
         public void onClick(View v) {
-            Intent intent = MainActivity.createTodoIntent(v.getContext(), currentTodo.getId());
+            Intent intent = TodoPagerActivity.createIntent(v.getContext(), currentTodo.getId());
             v.getContext().startActivity(intent);
         }
     }

@@ -24,12 +24,22 @@ public class TodoFragment extends Fragment {
         // Required empty public constructor
     }
 
+    public static TodoFragment createInstance(int id){
+
+        Bundle args = new Bundle();
+        args.putSerializable("todoID", id);
+
+        TodoFragment fragment = new TodoFragment();
+        fragment.setArguments(args);
+
+        return fragment;
+    }
+
     @Override
     public void onCreate(Bundle saveInstanceState){
         super.onCreate(saveInstanceState);
 
-        int todoId = (int)getActivity().getIntent().getSerializableExtra("todoID");
-
+        int todoId = (int)getArguments().getSerializable("todoID");
         aufgabe = TodoAdapter.getSingleton(getActivity()).getTodo(todoId);
     }
 
