@@ -8,6 +8,7 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.CheckBox;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -20,7 +21,7 @@ public class TodoAdapter extends RecyclerView.Adapter{
     private List<Todo> aufgaben;
     private MainActivity activity;
 
-    private static class TodoViewHolder extends RecyclerView.ViewHolder {
+    private static class TodoViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
 
         public TextView todoTitle;
         public CheckBox isDone;
@@ -30,6 +31,13 @@ public class TodoAdapter extends RecyclerView.Adapter{
             super(view);
             todoTitle = (TextView) view.findViewById(R.id.todoTitle);
             isDone = (CheckBox) view.findViewById(R.id.isDone);
+            view.setOnClickListener(this);
+        }
+
+        @Override
+        public void onClick(View v) {
+            Toast toast = Toast.makeText(v.getContext(), todoTitle.getText(), Toast.LENGTH_SHORT);
+            toast.show();
         }
     }
 
