@@ -1,6 +1,7 @@
 package de.lamber.sascha.todolist;
 
 import android.content.Context;
+import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,10 +14,21 @@ import java.util.List;
 /**
  * Created by Sascha on 05.01.2016.
  */
-public class TodoAdapter extends BaseAdapter{
+public class TodoAdapter extends RecyclerView.Adapter{
 
     private List<Todo> aufgaben;
     private MainActivity activity;
+
+    private static class TodoViewHolder extends RecyclerView.ViewHolder {
+
+        public TextView todoTitle;
+
+        public TodoViewHolder(View view){
+
+            super(view);
+            todoTitle = (TextView) view.findViewById(R.id.todoeintrag);
+        }
+    }
 
     public TodoAdapter(MainActivity activity){
 
@@ -41,31 +53,24 @@ public class TodoAdapter extends BaseAdapter{
     }
 
     @Override
-    public int getCount() {
-        return aufgaben.size();
+    public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+
+        View view = this.activity.getLayoutInflater().inflate(R.layout.todoeintrag, parent, false);
+        return new TodoViewHolder(view);
     }
 
     @Override
-    public Object getItem(int position) {
-        return aufgaben.get(position);
-    }
-
-    @Override
-    public long getItemId(int position) {
-        return aufgaben.get(position).getId();
-    }
-
-    @Override
-    public View getView(int position, View convertView, ViewGroup parent) {
+    public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
 
         Todo aufgabe = aufgaben.get(position);
 
-        LayoutInflater inflater = (LayoutInflater) activity.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        View row = inflater.inflate(R.layout.todoeintrag, parent, false);
+        TodoViewHolder todoHolder = (TodoViewHolder)holder;
+        todoHolder.todoTitle.setText(aufgabe.getTitle());
 
-        TextView todoTitle = (TextView) row.findViewById(R.id.todoeintrag);
-        todoTitle.setText(aufgabe.getTitle());
+    }
 
-        return row;
+    @Override
+    public int getItemCount() {
+        return aufgaben.size();
     }
 }
