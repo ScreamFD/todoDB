@@ -6,6 +6,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.CheckBox;
 import android.widget.TextView;
 
 import java.util.ArrayList;
@@ -22,11 +23,13 @@ public class TodoAdapter extends RecyclerView.Adapter{
     private static class TodoViewHolder extends RecyclerView.ViewHolder {
 
         public TextView todoTitle;
+        public CheckBox isDone;
 
         public TodoViewHolder(View view){
 
             super(view);
-            todoTitle = (TextView) view.findViewById(R.id.todoeintrag);
+            todoTitle = (TextView) view.findViewById(R.id.todoTitle);
+            isDone = (CheckBox) view.findViewById(R.id.isDone);
         }
     }
 
@@ -55,7 +58,7 @@ public class TodoAdapter extends RecyclerView.Adapter{
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
 
-        View view = this.activity.getLayoutInflater().inflate(R.layout.todoeintrag, parent, false);
+        View view = this.activity.getLayoutInflater().inflate(R.layout.komplexerer_eintrag, parent, false);
         return new TodoViewHolder(view);
     }
 
@@ -66,6 +69,7 @@ public class TodoAdapter extends RecyclerView.Adapter{
 
         TodoViewHolder todoHolder = (TodoViewHolder)holder;
         todoHolder.todoTitle.setText(aufgabe.getTitle());
+        todoHolder.isDone.setChecked(aufgabe.isDone());
 
     }
 
