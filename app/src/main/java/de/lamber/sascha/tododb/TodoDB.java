@@ -23,9 +23,9 @@ public class TodoDB {
 
     private static final String SQL_CREATE_ENTRIES =
             "CREATE TABLE " + TodoItem.TABLE_NAME + " (" +
-                    TodoItem._ID + "INTEGER PRIMARY KEY," +
+                    TodoItem._ID + " INTEGER PRIMARY KEY," +
                     TodoItem.COLNAME_TITLE + " TEXT," +
-                    TodoItem.COLNAME_ISDONE + " TINYINT(1)," +
+                    TodoItem.COLNAME_ISDONE + " TINYINT(1)" +
             ")";
 
     private static final String SQL_DELETE_ENTRIES =
