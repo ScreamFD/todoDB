@@ -24,7 +24,7 @@ public class TodoDB {
 
     private static final String SQL_CREATE_ENTRIES =
             "CREATE TABLE " + TodoItem.TABLE_NAME + " (" +
-                    TodoItem._ID + " INTEGER PRIMARY KEY," +
+                    TodoItem._ID + " INTEGER PRIMARY KEY AUTOINCREMENT," +
                     TodoItem.COLNAME_TITLE + " TEXT," +
                     TodoItem.COLNAME_ISDONE + " TINYINT(1)" +
             ")";
@@ -74,7 +74,7 @@ public class TodoDB {
         TodoItemDbHelper helper = new TodoItemDbHelper(context);
         SQLiteDatabase db = helper.getReadableDatabase();
 
-        String tableColums[] = {TodoItem.COLNAME_TITLE, TodoItem.COLNAME_ISDONE};
+        String tableColums[] = {TodoItem._ID, TodoItem.COLNAME_TITLE, TodoItem.COLNAME_ISDONE};
 
         try {
 
@@ -85,7 +85,7 @@ public class TodoDB {
             try {
 
                 while (cursor.moveToNext()) {
-                    Todo tempTodo = new Todo(cursor.getString(0), cursor.getInt(1));
+                    Todo tempTodo = new Todo(cursor.getInt(0), cursor.getString(1), cursor.getInt(2));
                     result.add(tempTodo);
                 }
 
@@ -121,8 +121,23 @@ public class TodoDB {
 
     public int update(Todo todo){
 
-        // TODO
-        return 0;
+        TodoItemDbHelper helper = new TodoItemDbHelper(context);
+        SQLiteDatabase db = helper.getWritableDatabase();
+
+        try {
+
+            ContentValues contentValues = new ContentValues();
+            contentValues.put(TodoItem.COLNAME_TITLE, todo.getTitle());
+            contentValues.put(TodoItem.COLNAME_ISDONE, todo.isDone());
+
+            String selecton = TodoItem._ID + " LIKE ?";
+            String[] selectionArgs = {String.valueOf(todo.getId())};
+
+            return db.update(TodoItem.TABLE_NAME, contentValues,selecton,selectionArgs);
+
+        }finally {
+            db.close();
+        }
     }
 
     // TODO: delete Todo-Entry

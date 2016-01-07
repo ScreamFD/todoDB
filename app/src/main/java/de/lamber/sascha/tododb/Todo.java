@@ -9,8 +9,8 @@ public class Todo {
     private String title;
     private boolean isDone;
 
-    public Todo(String title, int isDone){
-        id = (int)(Math.random() * 500000) + 1;
+    public Todo(int id, String title, int isDone){
+        this.id = id;
         this.title = title;
 
         this.isDone = false;

@@ -3,11 +3,14 @@ package de.lamber.sascha.tododb;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
+import android.widget.EditText;
 import android.widget.TextView;
 
 
@@ -17,7 +20,7 @@ import android.widget.TextView;
 public class TodoFragment extends Fragment {
 
     private Todo aufgabe;
-    private TextView todoTitle;
+    private EditText todoTitle;
     private CheckBox isDone;
     private TextView todoId;
 
@@ -49,16 +52,35 @@ public class TodoFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-       View view = inflater.inflate(R.layout.fragment_todo, container, false);
+       final View view = inflater.inflate(R.layout.fragment_todo, container, false);
 
-        todoTitle = (TextView) view.findViewById(R.id.todoTitle);
+        todoTitle = (EditText) view.findViewById(R.id.todoTitle);
         todoTitle.setText(aufgabe.getTitle());
+        todoTitle.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                aufgabe.setTitle(s.toString());
+                TodoDB.getInstance(view.getContext()).update(aufgabe);
+            }
+        });
+
         isDone = (CheckBox) view.findViewById(R.id.isDone);
         isDone.setChecked(aufgabe.isDone());
         isDone.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 aufgabe.setDone(isChecked);
+                TodoDB.getInstance(view.getContext()).update(aufgabe);
             }
         });
 

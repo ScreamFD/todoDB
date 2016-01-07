@@ -59,4 +59,11 @@ public class MainActivity extends AppCompatActivity {
             todoList.setAdapter(adapter);
         }
     }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+
+        TodoAdapter.getSingleton(this).notifyDataSetChanged();
+    }
 }
