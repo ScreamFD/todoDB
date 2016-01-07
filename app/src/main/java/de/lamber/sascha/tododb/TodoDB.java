@@ -76,6 +76,8 @@ public class TodoDB {
 
         String tableColums[] = {TodoItem._ID, TodoItem.COLNAME_TITLE, TodoItem.COLNAME_ISDONE};
 
+        deleteDoneTodos();
+
         try {
 
             ArrayList<Todo> result = new ArrayList<>();
@@ -150,6 +152,22 @@ public class TodoDB {
             String[] wherenArgs = {String.valueOf(todo.getId())};
 
             return db.delete(TodoItem.TABLE_NAME, whereClause, wherenArgs);
+
+        }finally {
+            db.close();
+        }
+    }
+
+    public void deleteDoneTodos(){
+
+        TodoItemDbHelper helper = new TodoItemDbHelper(context);
+        SQLiteDatabase db = helper.getWritableDatabase();
+
+        try {
+            String whereClause = TodoItem.COLNAME_ISDONE + " = ?";
+            String[] wherenArgs = {"1"};
+
+            db.delete(TodoItem.TABLE_NAME, whereClause, wherenArgs);
 
         }finally {
             db.close();
