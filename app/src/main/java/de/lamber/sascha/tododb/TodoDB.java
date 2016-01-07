@@ -1,5 +1,6 @@
 package de.lamber.sascha.tododb;
 
+import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
@@ -101,8 +102,21 @@ public class TodoDB {
 
     public long insert(String title, boolean isDone){
 
-        // TODO
-        return 0;
+        TodoItemDbHelper helper = new TodoItemDbHelper(context);
+        SQLiteDatabase db = helper.getReadableDatabase();
+
+        try {
+
+            ContentValues contentValues = new ContentValues();
+            contentValues.put(TodoItem.COLNAME_TITLE, title);
+            contentValues.put(TodoItem.COLNAME_ISDONE, isDone);
+
+            return db.insert(TodoItem.TABLE_NAME, TodoItem.COLNAME_TITLE, contentValues);
+
+        }finally {
+            db.close();
+        }
+
     }
 
     public int update(Todo todo){
