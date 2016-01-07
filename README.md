@@ -1,2 +1,2 @@
 # Todo App
-An Android Todo App with fixed content
+An Android Todo App with a SQLite DB
