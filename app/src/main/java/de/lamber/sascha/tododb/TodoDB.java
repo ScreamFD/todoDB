@@ -1,6 +1,7 @@
 package de.lamber.sascha.tododb;
 
 import android.content.Context;
+import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.provider.BaseColumns;
@@ -53,6 +54,7 @@ public class TodoDB {
 
     private Context context;
     private static TodoDB myInstance;
+
     private TodoDB(Context context){
         this.context = context;
     }
@@ -68,9 +70,33 @@ public class TodoDB {
 
     public List<Todo> getAll(){
 
-        // TODO
-        return new ArrayList<>();
+        TodoItemDbHelper helper = new TodoItemDbHelper(context);
+        SQLiteDatabase db = helper.getReadableDatabase();
 
+        String tableColums[] = {TodoItem.COLNAME_TITLE, TodoItem.COLNAME_ISDONE};
+
+        try {
+
+            ArrayList<Todo> result = new ArrayList<>();
+            Cursor cursor = db.query(TodoItem.TABLE_NAME,
+                    tableColums, null, null, null, null, null);
+
+            try {
+
+                while (cursor.moveToNext()) {
+                    Todo tempTodo = new Todo(cursor.getString(0), cursor.getInt(1));
+                    result.add(tempTodo);
+                }
+
+                return result;
+
+            }finally {
+                cursor.close();
+            }
+
+        }finally {
+            db.close();
+        }
     }
 
     public long insert(String title, boolean isDone){
