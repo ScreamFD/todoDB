@@ -1,9 +1,11 @@
 package de.lamber.sascha.tododb;
 
 
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.provider.BaseColumns;
 import android.support.v4.app.Fragment;
+import android.support.v7.app.AlertDialog;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.LayoutInflater;
@@ -94,12 +96,35 @@ public class TodoFragment extends Fragment {
         deleteButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                TodoDB.getInstance(view.getContext()).delete(aufgabe);
-                getActivity().finish();
+                AlertDialog dialog = ackDialog();
+                dialog.show();
             }
         });
 
         return view;
     }
 
+    private AlertDialog ackDialog(){
+
+        final AlertDialog sureDialog = new AlertDialog.Builder(getActivity())
+                .setTitle("Löschen?")
+                .setMessage("Wirklich entfernen?")
+                .setIcon(android.R.drawable.ic_delete)
+                .setPositiveButton("Löschen", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        TodoDB.getInstance(getActivity()).delete(aufgabe);
+                        dialog.dismiss();
+                        getActivity().finish();
+                    }
+                })
+                .setNegativeButton("Abbrechen", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.dismiss();
+                    }
+                }).create();
+
+        return sureDialog;
+    }
 }
