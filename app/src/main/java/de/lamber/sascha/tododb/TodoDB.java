@@ -140,5 +140,19 @@ public class TodoDB {
         }
     }
 
-    // TODO: delete Todo-Entry
+    public int delete(Todo todo){
+
+        TodoItemDbHelper helper = new TodoItemDbHelper(context);
+        SQLiteDatabase db = helper.getWritableDatabase();
+
+        try {
+            String whereClause = TodoItem._ID + " = ?";
+            String[] wherenArgs = {String.valueOf(todo.getId())};
+
+            return db.delete(TodoItem.TABLE_NAME, whereClause, wherenArgs);
+
+        }finally {
+            db.close();
+        }
+    }
 }

@@ -54,16 +54,19 @@ public class MainActivity extends AppCompatActivity {
         super.onActivityResult(requestCode, resultCode, data);
 
         if (requestCode == NEWENTRY && resultCode == OK){
-            TodoAdapter adapter = TodoAdapter.getSingleton(this);
-            adapter.reload();
-            todoList.setAdapter(adapter);
+            refreshList();
         }
     }
 
     @Override
     protected void onResume() {
         super.onResume();
+        refreshList();
+    }
 
-        TodoAdapter.getSingleton(this).notifyDataSetChanged();
+    private void refreshList(){
+        TodoAdapter adapter = TodoAdapter.getSingleton(this);
+        adapter.reload();
+        todoList.setAdapter(adapter);
     }
 }

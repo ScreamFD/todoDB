@@ -2,12 +2,14 @@ package de.lamber.sascha.tododb;
 
 
 import android.os.Bundle;
+import android.provider.BaseColumns;
 import android.support.v4.app.Fragment;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.EditText;
@@ -23,6 +25,7 @@ public class TodoFragment extends Fragment {
     private EditText todoTitle;
     private CheckBox isDone;
     private TextView todoId;
+    private Button deleteButton;
 
     public TodoFragment() {
         // Required empty public constructor
@@ -86,6 +89,15 @@ public class TodoFragment extends Fragment {
 
         todoId = (TextView) view.findViewById(R.id.todoId);
         todoId.setText(String.valueOf(aufgabe.getId()));
+
+        deleteButton = (Button) view.findViewById(R.id.deleteButton);
+        deleteButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                TodoDB.getInstance(view.getContext()).delete(aufgabe);
+                getActivity().finish();
+            }
+        });
 
         return view;
     }
