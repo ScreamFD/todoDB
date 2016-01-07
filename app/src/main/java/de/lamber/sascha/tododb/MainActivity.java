@@ -12,6 +12,9 @@ import android.view.MenuItem;
 
 public class MainActivity extends AppCompatActivity {
 
+    public static final int NEWENTRY = 42;
+    public static final int OK = 1;
+
     RecyclerView todoList;
 
     @Override
@@ -39,11 +42,21 @@ public class MainActivity extends AppCompatActivity {
             case R.id.addItem:
 
                 Intent intent = new Intent(this, NewTodoActivity.class);
-                startActivity(intent);
+                startActivityForResult(intent, NEWENTRY);
                 return true;
             default:
                 return super.onOptionsItemSelected(item);
         }
+    }
 
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        if (requestCode == NEWENTRY && resultCode == OK){
+            TodoAdapter adapter = TodoAdapter.getSingleton(this);
+            adapter.reload();
+            todoList.setAdapter(adapter);
+        }
     }
 }
