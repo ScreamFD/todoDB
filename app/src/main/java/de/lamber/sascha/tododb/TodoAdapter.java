@@ -76,22 +76,12 @@ public class TodoAdapter extends RecyclerView.Adapter{
 
         this.activity = activity;
 
-        aufgaben = new ArrayList<Todo>();
-        aufgaben.add(new Todo("Aufgabe #1"));
-        aufgaben.add(new Todo("Aufgabe #2"));
-        aufgaben.add(new Todo("Aufgabe #3"));
-        aufgaben.add(new Todo("Aufgabe #4"));
-        aufgaben.add(new Todo("Aufgabe #5"));
-        aufgaben.add(new Todo("Aufgabe #6"));
-        aufgaben.add(new Todo("Aufgabe #7"));
-        aufgaben.add(new Todo("Aufgabe #8"));
-        aufgaben.add(new Todo("Aufgabe #9"));
-        aufgaben.add(new Todo("Aufgabe #10"));
-        aufgaben.add(new Todo("Aufgabe #11"));
-        aufgaben.add(new Todo("Aufgabe #12"));
-        aufgaben.add(new Todo("Aufgabe #13"));
-        aufgaben.add(new Todo("Aufgabe #14"));
+        reload();
+    }
 
+    public void reload(){
+        TodoDB todoDB = TodoDB.getInstance(activity.getApplicationContext());
+        aufgaben = todoDB.getAll();
     }
 
     @Override
